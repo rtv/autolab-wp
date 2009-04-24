@@ -1,5 +1,5 @@
 /***************************************************************************
- * Project: RAPI                                                           *
+ * Project: autolab-wp                                                     *
  * Author:  Jens Wawerla (jwawerla@sfu.ca)                                 *
  * $Id: gridmap.cpp,v 1.8 2009-04-09 17:03:37 vaughan Exp $
  ***************************************************************************
@@ -109,6 +109,11 @@ CGridMap::CGridMap ( uint8_t* data, int numCellsX, int numCellsY, float cellSize
   mMaxCellValue = 1.0;
 }
 //---------------------------------------------------------------------------
+CGridMap::CGridMap()
+{
+  // empty constructor for derived classes only
+}
+//---------------------------------------------------------------------------
 /*
 CGridMap::CGridMap ( Stg::Model* model, float cellSize )
 {
@@ -184,34 +189,34 @@ float CGridMap::getMapWidth()
   return ( mNumCellsX -1 ) * mCellSize;
 }
 //---------------------------------------------------------------------------
-float CGridMap::getCellValue ( CPose pose )
+float CGridMap::getCellValue ( CPose2d pose )
 {
-  tPoint2d pos;
+  CPoint2d pos;
 
-  pos.x = pose.mX;
-  pos.y = pose.mY;
+  pos.mX = pose.mX;
+  pos.mY = pose.mY;
   return getCellValue ( pos );
 }
 //---------------------------------------------------------------------------
-float CGridMap::getCellValue ( tPoint2d pos )
+float CGridMap::getCellValue ( CPoint2d pos )
 {
   int x, y;
 
-  x = mCenterCellX + ( int ) round ( pos.x / mCellSize );
-  y = mCenterCellY + ( int ) round ( pos.y / mCellSize );
+  x = mCenterCellX + ( int ) round ( pos.mX / mCellSize );
+  y = mCenterCellY + ( int ) round ( pos.mY / mCellSize );
 
   if ( ( x > 0 ) && ( x < mNumCellsX ) && ( y > 0 ) && ( y < mNumCellsY ) )
     return mMapData[x][y];
 
-  PRT_ERR2 ( "Location outside of map %f %f \n", pos.x, pos.y );
+  PRT_ERR2 ( "Location outside of map %f %f \n", pos.mX, pos.mY );
 
   return 0;
 }
 //---------------------------------------------------------------------------
-void CGridMap::setRobotPosition ( tPoint2d robotPos )
+void CGridMap::setRobotPosition ( CPoint2d robotPos )
 {
-  mRobotCell.x = mCenterCellX + ( int ) round ( robotPos.x / mCellSize );
-  mRobotCell.y = mCenterCellY + ( int ) round ( robotPos.y / mCellSize );
+  mRobotCell.mX = mCenterCellX + ( int ) round ( robotPos.mX / mCellSize );
+  mRobotCell.mY = mCenterCellY + ( int ) round ( robotPos.mY / mCellSize );
 }
 //---------------------------------------------------------------------------
 void CGridMap::preSetMap ( float value )
@@ -223,7 +228,7 @@ void CGridMap::preSetMap ( float value )
   }
 }
 //-----------------------------------------------------------------------------
-void CGridMap::preSetMap ( float value, CPose center, float halfBoxLenght )
+void CGridMap::preSetMap ( float value, CPose2d center, float halfBoxLenght )
 {
   int minX, minY, maxX, maxY;
 
@@ -244,12 +249,12 @@ void CGridMap::preSetMap ( float value, CPose center, float halfBoxLenght )
   }
 }
 //-----------------------------------------------------------------------------
-tPoint2d CGridMap::centerToLocal ( tPoint2d gPos )
+CPoint2d CGridMap::centerToLocal ( CPoint2d gPos )
 {
-  tPoint2d lPos2;
+  CPoint2d lPos2;
 
-  lPos2.x = gPos.x  + ( mNumCellsX * 0.5 * mCellSize );
-  lPos2.y = gPos.y  + ( mNumCellsY * 0.5 * mCellSize );
+  lPos2.mX = gPos.mX  + ( mNumCellsX * 0.5 * mCellSize );
+  lPos2.mY = gPos.mY + ( mNumCellsY * 0.5 * mCellSize );
 
   return lPos2;
 }

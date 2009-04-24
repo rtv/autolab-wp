@@ -114,7 +114,7 @@ class MapVis : public Stg::Visualizer
 			 
 
           float mapval = 1.0 - MIN ( map->mMapData[x][y] / normalizer, 1 );
-          if ( mapval > 0.01 ) {
+          if ( mapval > 0.00 ) {
             displaymod->PushColor ( mapval, mapval, mapval, 0.8 );
             glRectf ( x, y, x + 1, y + 1 );
             displaymod->PopColor();

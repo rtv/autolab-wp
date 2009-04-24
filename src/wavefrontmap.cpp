@@ -96,6 +96,10 @@
  ***************************************************************************/
 #include "wavefrontmap.h"
 
+#include "utilities.h"
+#include "printerror.h"
+#include "string.h"
+
 /** Default speed to initialize map [m/s] */
 const float DEFAULT_SPEED = 0.6;
 /** Maximum allowable speed [m/s] */
@@ -329,33 +333,33 @@ void CWaveFrontMap::generateDistanceMap()
   }
 }
 //---------------------------------------------------------------------------
-float CWaveFrontMap::getDistanceToClosestObstacle ( tPoint2d localPos )
+float CWaveFrontMap::getDistanceToClosestObstacle ( CPoint2d localPos )
 {
   int x, y;
 
-  x = mCenterCellX + ( int ) ( localPos.x / mCellSize );
-  y = mCenterCellY + ( int ) ( localPos.y / mCellSize );
+  x = mCenterCellX + ( int ) ( localPos.mX / mCellSize );
+  y = mCenterCellY + ( int ) ( localPos.mY / mCellSize );
 
   // check boundaries
   if ( ( x < 0 ) || ( x >= mNumCellsX ) ||
        ( y < 0 ) || ( y >= mNumCellsY ) ) {
-    PRT_ERR2 ( "Coordinates out of bounds %f %f", localPos.x, localPos.y );
+    PRT_ERR2 ( "Coordinates out of bounds %f %f", localPos.mX, localPos.mY );
     return -1; // error
   }
   return  mDistanceMap[x][y] * mCellSize;
 }
 //-----------------------------------------------------------------------------
-float CWaveFrontMap::getGradient ( tPoint2d localPos )
+float CWaveFrontMap::getGradient ( CPoint2d localPos )
 {
   int x, y;
 
-  x = mCenterCellX + ( int ) ( localPos.x / mCellSize );
-  y = mCenterCellY + ( int ) ( localPos.y / mCellSize );
+  x = mCenterCellX + ( int ) ( localPos.mX / mCellSize );
+  y = mCenterCellY + ( int ) ( localPos.mY / mCellSize );
 
   // check boundaries
   if ( ( x < 0 ) || ( x >= mNumCellsX ) ||
        ( y < 0 ) || ( y >= mNumCellsY ) ) {
-    PRT_ERR2 ( "Coordinates out of bounds %f %f", localPos.x, localPos.y );
+    PRT_ERR2 ( "Coordinates out of bounds %f %f", localPos.mX, localPos.mY );
     return 0; // error
   }
   // check if there is an obstacle at this location
@@ -365,19 +369,19 @@ float CWaveFrontMap::getGradient ( tPoint2d localPos )
   return  mMapData[x][y];
 }
 //----------------------------------------------------------------------------
-float CWaveFrontMap::getGradientDirection ( tPoint2d localPos )
+float CWaveFrontMap::getGradientDirection ( CPoint2d localPos )
 {
   int x, y;
   float minValue = INFINITY;
   float direction = 0;
 
-  x = mCenterCellX + ( int ) ( localPos.x / mCellSize );
-  y = mCenterCellY + ( int ) ( localPos.y / mCellSize );
+  x = mCenterCellX + ( int ) ( localPos.mX / mCellSize );
+  y = mCenterCellY + ( int ) ( localPos.mY / mCellSize );
 
   // check boundaries
   if ( ( x < 0 ) || ( x >= mNumCellsX ) ||
        ( y < 0 ) || ( y >= mNumCellsY ) ) {
-    PRT_ERR2 ( "Coordinates out of bounds %f %f", localPos.x, localPos.y );
+    PRT_ERR2 ( "Coordinates out of bounds %f %f", localPos.mX, localPos.mY );
     return 0; // error
   }
 
@@ -396,7 +400,7 @@ float CWaveFrontMap::getGradientDirection ( tPoint2d localPos )
   return direction;
 }
 //----------------------------------------------------------------------------
-void CWaveFrontMap::setRobotPose ( CPose* pose )
+void CWaveFrontMap::setRobotPose ( CPose2d* pose )
 {
   mRobotPose = pose;
 }
@@ -486,14 +490,14 @@ void CWaveFrontMap::generateSensorMap()
 //----------------------------------------------------------------------------
 int CWaveFrontMap::calculateWaveFront ( float x, float y, bool useSensorData )
 {
-  tPoint2d point;
+  CPoint2d point;
 
-  point.x = x;
-  point.y = y;
+  point.mX = x;
+  point.mY = y;
   return calculateWaveFront ( point, useSensorData );
 }
 //----------------------------------------------------------------------------
-int CWaveFrontMap::calculateWaveFront ( tPoint2d goal, bool useSensorData )
+int CWaveFrontMap::calculateWaveFront ( CPoint2d goal, bool useSensorData )
 {
   tCellCoordinate cell;
   tCellCoordinate newCell;
@@ -514,13 +518,13 @@ int CWaveFrontMap::calculateWaveFront ( tPoint2d goal, bool useSensorData )
     generateSensorMap();
   }
 
-  x = mCenterCellX + ( int ) round ( goal.x / mCellSize );
-  y = mCenterCellY + ( int ) round ( goal.y / mCellSize );
+  x = mCenterCellX + ( int ) round ( goal.mX / mCellSize );
+  y = mCenterCellY + ( int ) round ( goal.mY / mCellSize );
 
   // check boundaries
   if ( ( x < 0 ) || ( x >= mNumCellsX ) ||
        ( y < 0 ) || ( y >= mNumCellsY ) ) {
-    PRT_ERR2 ( "Coordinates out of bounds %f %f", goal.x, goal.y );
+    PRT_ERR2 ( "Coordinates out of bounds %f %f", goal.mX, goal.mY );
     return 0; // error
   }
 
@@ -719,26 +723,26 @@ void CWaveFrontMap::saveMaptoFile ( char* fileName )
   }
 }
 //----------------------------------------------------------------------------
-float CWaveFrontMap::calculatePlanFrom ( CPose localPos )
+float CWaveFrontMap::calculatePlanFrom ( CPose2d localPos )
 {
-  tPoint2d point;
+  CPoint2d point;
 
-  point.x = localPos.mX;
-  point.y = localPos.mY;
+  point.mX = localPos.mX;
+  point.mY = localPos.mY;
 
   return calculatePlanFrom ( point );
 }
 //----------------------------------------------------------------------------
 float CWaveFrontMap::calculatePlanFrom ( float x, float y )
 {
-  tPoint2d point;
+  CPoint2d point;
 
-  point.x = x;
-  point.y = y;
+  point.mX = x;
+  point.mY = y;
   return calculatePlanFrom ( point );
 }
 //----------------------------------------------------------------------------
-float CWaveFrontMap::calculatePlanFrom ( tPoint2d localPos )
+float CWaveFrontMap::calculatePlanFrom ( CPoint2d localPos )
 {
   int x, y;
   int maxSteps;
@@ -750,28 +754,28 @@ float CWaveFrontMap::calculatePlanFrom ( tPoint2d localPos )
   float lastHeading = TWOPI;
   float heading = 0;
   tCellCoordinate minCell;
-  tPoint2d minNeighbour;
-  tPoint2d lastCell;
-  CPose waypoint;
+  CPoint2d minNeighbour;
+  CPoint2d lastCell;
+  CPose2d waypoint;
 
   maxSteps = ( int ) ( mMaxPathLength / mCellSize );
 
-  x = mCenterCellX + ( int ) ( localPos.x / mCellSize );
-  y = mCenterCellY + ( int ) ( localPos.y / mCellSize );
-  waypoint.mX = localPos.x;
-  waypoint.mY = localPos.y;
+  x = mCenterCellX + ( int ) ( localPos.mX / mCellSize );
+  y = mCenterCellY + ( int ) ( localPos.mY / mCellSize );
+  waypoint.mX = localPos.mX;
+  waypoint.mY = localPos.mY;
 
   minCell.x = x;                  // shut up compiler
   minCell.y = y;                  // shut up compiler
-  lastCell.x = localPos.x;
-  lastCell.y = localPos.y;
+  lastCell.mX = localPos.mX;
+  lastCell.mY = localPos.mY;
 
   // clear way point list
   mWayPointList.clear();
 
   if ( ( x < 0 ) || ( x >= mNumCellsX ) ||
        ( y < 0 ) || ( y > mNumCellsY ) ) {
-    PRT_ERR2 ( "Coordinates out of bounds %f %f", localPos.x, localPos.y );
+    PRT_ERR2 ( "Coordinates out of bounds %f %f", localPos.mX, localPos.mY );
     return -1;
   }
 
@@ -800,26 +804,26 @@ float CWaveFrontMap::calculatePlanFrom ( tPoint2d localPos )
     x = (int) minCell.x;
     y = (int) minCell.y;
     // convert from cells to meter
-    minNeighbour.x = ( minCell.x - mCenterCellX ) * mCellSize;
-    minNeighbour.y = ( minCell.y - mCenterCellY ) * mCellSize;
+    minNeighbour.mX = ( minCell.x - mCenterCellX ) * mCellSize;
+    minNeighbour.mY = ( minCell.y - mCenterCellY ) * mCellSize;
     // calculate path lenght
-    length = length + sqrt ( pow2 ( minNeighbour.x - lastCell.x ) +
-                             pow2 ( minNeighbour.y - lastCell.y ) );
+    length = length + sqrt ( pow2 ( minNeighbour.mX - lastCell.mX ) +
+                             pow2 ( minNeighbour.mY - lastCell.mY ) );
     // distance to last waypoint
-    wayPointDist = sqrt ( pow2 ( minNeighbour.x - waypoint.mX ) +
-                          pow2 ( minNeighbour.y - waypoint.mY ) );
+    wayPointDist = sqrt ( pow2 ( minNeighbour.mX - waypoint.mX ) +
+                          pow2 ( minNeighbour.mY - waypoint.mY ) );
 
     // have we traveled far enough from the last waypoint ?
     if ( wayPointDist > mMinWayPointDistance ) {
       // what the new heading ?
-      heading = atan2 ( minNeighbour.y - lastCell.y,
-                        minNeighbour.x - lastCell.x );
+      heading = atan2 ( minNeighbour.mY - lastCell.mY,
+                        minNeighbour.mX - lastCell.mX );
       // has our heading changed ? if so this should be a new waypoint
       if ( ( !epsilonEqual(heading, lastHeading, mAngleWayPointThreshold) ) ||
            ( wayPointDist > mMaxWayPointDistance ) ) {
-        waypoint.mYaw = atan2 ( minNeighbour.y - waypoint.mY, minNeighbour.x - waypoint.mX );
-        waypoint.mX = minNeighbour.x;
-        waypoint.mY = minNeighbour.y;
+        waypoint.mYaw = atan2 ( minNeighbour.mY - waypoint.mY, minNeighbour.mX - waypoint.mX );
+        waypoint.mX = minNeighbour.mX;
+        waypoint.mY = minNeighbour.mY;
 //printf("WP %f %f in cell %d %d center %d %d \n", waypoint.mX ,waypoint.mY, minCell.x, minCell.y, mCenterCellX, mCenterCellY);
         mWayPointList.push_back ( waypoint );
         if ( mWayPointList.size() >= mMaxNumWayPoints ) {
@@ -829,12 +833,11 @@ float CWaveFrontMap::calculatePlanFrom ( tPoint2d localPos )
         lastHeading = heading;
       }
     }
-    lastCell.x = minNeighbour.x;
-    lastCell.y = minNeighbour.y;
+    lastCell = minNeighbour;
   } // while
   // add goal as last waypoint
-  waypoint.mX = mGoalPosition.x;
-  waypoint.mY = mGoalPosition.y;
+  waypoint.mX = mGoalPosition.mX;
+  waypoint.mY = mGoalPosition.mY;
   waypoint.mYaw = heading;
   mWayPointList.push_back ( waypoint );
 
@@ -859,11 +862,11 @@ float CWaveFrontMap::calculatePlanFrom ( tPoint2d localPos )
   return length;
 }
 //----------------------------------------------------------------------------
-void CWaveFrontMap::getWayPointList ( std::list<CPose> &destList )
+void CWaveFrontMap::getWayPointList ( std::list<CPose2d> &destList )
 {
-  CPose pose;
-  CPose newPose;
-  std::list<CPose>::iterator it;
+  CPose2d pose;
+  CPose2d newPose;
+  std::list<CPose2d>::iterator it;
 
   destList.clear();
 

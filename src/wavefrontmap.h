@@ -1,5 +1,5 @@
 /***************************************************************************
- * Project: RAPI                                                           *
+ * Project: autolab-wp                                                     *
  * Author:  Jens Wawerla (jwawerla@sfu.ca)                                 *
  * $Id: wavefrontmap.h,v 1.11 2009-04-09 17:03:38 vaughan Exp $
  ***************************************************************************
@@ -18,55 +18,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************
- * $Log: wavefrontmap.h,v $
- * Revision 1.11  2009-04-09 17:03:38  vaughan
- * removed QT and SDL dependencies. Added install target for libraries
- *
- * Revision 1.10  2009-04-08 22:40:41  jwawerla
- * Hopefully ND interface issue solved
- *
- * Revision 1.9  2009-04-05 01:16:51  jwawerla
- * still debuging wavefront map
- *
- * Revision 1.8  2009-04-03 15:10:03  jwawerla
- * *** empty log message ***
- *
- * Revision 1.7  2009-03-31 23:52:59  jwawerla
- * Moved cell index from float to int math
- *
- * Revision 1.6  2009-03-31 04:27:33  jwawerla
- * Some bug fixing
- *
- * Revision 1.5  2009-03-29 00:54:27  jwawerla
- * Replan ctrl seems to work now
- *
- * Revision 1.4  2009-03-28 00:54:39  jwawerla
- * *** empty log message ***
- *
- * Revision 1.3  2009-03-23 06:24:22  jwawerla
- * RobotVis works now for data, maps still need more work
- *
- * Revision 1.2  2009-03-20 03:05:23  jwawerla
- * dynamic obstacles added to wavefront
- *
- * Revision 1.1.1.1  2009-03-15 03:52:02  jwawerla
- * First commit
- *
- * Revision 1.1.1.1  2008/02/02 22:19:54  jwawerla
- * new to cvs
- *
- * Revision 1.4  2008/01/17 23:41:10  jwawerla
- * fixed some bugs
- *
- * Revision 1.3  2008/01/12 01:16:59  jwawerla
- * working on wavefront waypoint list
- *
- * Revision 1.2  2008/01/11 02:05:17  jwawerla
- * Added local coordinate system
- *
- * Revision 1.1.1.1  2008/01/10 19:44:00  jwawerla
- * first time in cvs
- *
+ * $Log:  $
  *
  ***************************************************************************/
 #ifndef CWAVEFRONTMAP_H
@@ -110,7 +62,7 @@ class CWaveFrontMap : public CGridMap
      * Sets the robot position
      * @param pos of robot
      */
-    void setRobotPose(CPose* pos);
+    void setRobotPose(CPose2d* pos);
     /**
      * Adds a rangefinder for dynamic obstacles
      * @param rangerfinder to be added
@@ -122,7 +74,7 @@ class CWaveFrontMap : public CGridMap
      * @param useSensorData incoorporates the range finder data
      * @return 1 success, 0 otherwise
      */
-     int calculateWaveFront(tPoint2d goal, bool useSensorData = false);
+     int calculateWaveFront(CPoint2d goal, bool useSensorData = false);
     /**
      * Calculate the wavefront for a give local location
      * @param x [m]
@@ -136,7 +88,7 @@ class CWaveFrontMap : public CGridMap
       * @param localPos position to get gradient for
       * @return direction [rad]
       */
-     float getGradientDirection(tPoint2d localPos);
+     float getGradientDirection(CPoint2d localPos);
      /**
       * NOTE: this doesn't work yet
       * Update the wavefront gradient only localy, based on the current
@@ -149,7 +101,7 @@ class CWaveFrontMap : public CGridMap
       * @param localPos position to get gradient for
       * @return gradient value [rad]
       */
-     float getGradient(tPoint2d localPos);
+     float getGradient(CPoint2d localPos);
      /**
       * Calculates a plan from a given location to the goal location,
       * sets map markers for a plan and returns the length
@@ -157,7 +109,7 @@ class CWaveFrontMap : public CGridMap
       * @param localPos position to start at
       * @return length of plan [m], -1 in case of an error
       */
-     float calculatePlanFrom(tPoint2d localPos);
+     float calculatePlanFrom(CPoint2d localPos);
      /**
       * Calculates a plan from a given location to the goal location,
       * sets map markers for a plan and returns the length
@@ -165,7 +117,7 @@ class CWaveFrontMap : public CGridMap
       * @param localPos position to start at
       * @return length of plan [m], -1 in case of an error
       */
-     float calculatePlanFrom(CPose localPos);
+     float calculatePlanFrom(CPose2d localPos);
      /**
       * Calculates a plan from a given location to the goal location,
       * sets map markers for a plan and returns the length
@@ -179,7 +131,7 @@ class CWaveFrontMap : public CGridMap
       * Gets the distance to the closest obstacle
       * @return distance [m]
       */
-     float getDistanceToClosestObstacle(tPoint2d localPos);
+     float getDistanceToClosestObstacle(CPoint2d localPos);
      /**
       * Gets the name of the map
       * @return map name
@@ -189,7 +141,7 @@ class CWaveFrontMap : public CGridMap
       * Gets the way point list, note this method clears destList first
       * @param destList to fill with way points
       */
-     void getWayPointList(std::list<CPose> &destList);
+     void getWayPointList(std::list<CPose2d> &destList);
      /**
       * Saves the gradient map to a file
       * @param filename
@@ -211,7 +163,7 @@ class CWaveFrontMap : public CGridMap
      /** Sensor map time offset */
      float mSensorMapTimeOffset;
      /** List of way points */
-     std::list<CPose> mWayPointList;
+     std::list<CPose2d> mWayPointList;
     /** Map that contains all obstacles */
     CGridMap* mObstacleMap;
   protected:
@@ -229,7 +181,7 @@ class CWaveFrontMap : public CGridMap
      } tCellCoordinate;
   private:
     /** Robot pose */
-    CPose* mRobotPose;
+    CPose2d* mRobotPose;
     /** List of range finders */
     std::list<ARangeFinder*> mRangeFinderList;
     /** Name of map */
@@ -247,7 +199,7 @@ class CWaveFrontMap : public CGridMap
     /** Maximal number of way points */
     unsigned int mMaxNumWayPoints;
     /** Goal location */
-    tPoint2d mGoalPosition;
+    CPoint2d mGoalPosition;
     /** Value by with to grow obstacles [m] */
     float mObstacleGrowth;
     /** Minimum allowable distance between two waypoints [m] */
@@ -267,7 +219,7 @@ class CWaveFrontMap : public CGridMap
     /** Speed over ground from last time step [m/s] */
     float mSpeedOverGround;
     /** Last robot pose information */
-    CPose mLastRobotPose;
+    CPose2d mLastRobotPose;
 };
 
 #endif

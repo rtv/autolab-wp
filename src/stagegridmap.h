@@ -1,8 +1,9 @@
 /***************************************************************************
  * Project: autolab-wp                                                     *
  * Author:  Jens Wawerla (jwawerla@sfu.ca)                                 *
- * $Id: mapmarker.h,v 1.1.1.1 2009-03-15 03:52:03 jwawerla Exp $
+ * $Id: $
  ***************************************************************************
+ *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -18,73 +19,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************
- * $Log: $
+ * $Log:  $
  *
  *
  ***************************************************************************/
-#ifndef CMAPMARKER_H
-#define CMAPMARKER_H
+#ifndef STAGEGRIDMAP_H
+#define STAGEGRIDMAP_H
 
-#include "rgbcolor.h"
-#include "point2d.h"
-#include <cstring>
-
+#include "gridmap.h"
+#include "stage.hh"
 
 /**
- * Marks a location on a map
- * @author Jens Wawerla <jwawerla@sfu.ca>
+ * This class in an extention to CGridMap in that it provides an
+ * interface to Stage. It is able to load a map directly from Stage using
+ * the rasterizer.
+ * @author Jens Wawerla
  */
-
-class CMapMarker
+class CStageGridMap : public CGridMap
 {
-
   public:
     /**
-     * Default constructor, constructs a marker at (x,y)
-     * @param color of marker in map visualization
-     * @param text of the marker (max 30 char)
-     * @param x [m]
-     * @param y [m]
+     * Constructs a map from a Stage model grid (0=empty, >0=occupied).
+     * Map cell values are set to 0.0=empty, 1.0=occupied.
+     * @param model Stage model to get map data from
+     * @param cellSize size of a grid cell [m]
      */
-    CMapMarker(CRgbColor color, char* text, float x=0, float y=0);
-    /**
-     * Default constructor, constructs a marker at (x,y)
-     * @param color of marker in map visualization
-     * @param text of the marker (max 30 char)
-     * @param point to mark
-     */
-    CMapMarker(CRgbColor color, char* text, Rapi::CPoint2d point);
+    CStageGridMap(Stg::Model* model, float cellSize);
     /** Default destructor */
-    ~CMapMarker();
-    /**
-     * Gets the location of the marker
-     * @return location
-     */
-    Rapi::CPoint2d getLocation() {return mLocation; };
-    /**
-     * Sets the location of the marker
-     * @param loc location to be set
-     */
-    void setLocation(Rapi::CPoint2d loc);
-    /**
-     * Gets the color of the marker
-     * @return color
-     */
-    CRgbColor getColor() { return mColor; };
-    /**
-     * Gets the text of the marker
-     * @return text
-     */
-    char* getText() { return mText; };
-
-  private:
-    /** Location of the marker [m][m] */
-    Rapi::CPoint2d mLocation;
-    /** Color of the marker */
-    CRgbColor mColor;
-    /** Text of the marker */
-    char mText[30];
-
+    virtual ~CStageGridMap();
 
 };
 

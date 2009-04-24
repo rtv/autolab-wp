@@ -1,7 +1,7 @@
 /***************************************************************************
  * Project: autolab-wp                                                     *
  * Author:  Jens Wawerla (jwawerla@sfu.ca)                                 *
- * $Id: mapmarker.h,v 1.1.1.1 2009-03-15 03:52:03 jwawerla Exp $
+ * $Id: ccolor.h,v 1.1.1.1 2009-03-15 03:52:02 jwawerla Exp $
  ***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,69 +22,41 @@
  *
  *
  ***************************************************************************/
-#ifndef CMAPMARKER_H
-#define CMAPMARKER_H
-
-#include "rgbcolor.h"
-#include "point2d.h"
-#include <cstring>
-
+#ifndef RGBCOLOR_H
+#define RGBCOLOR_H
 
 /**
- * Marks a location on a map
+ * Defines a rgb color
  * @author Jens Wawerla <jwawerla@sfu.ca>
+ * @version 0.1 - 12/2007
  */
 
-class CMapMarker
+class CRgbColor
 {
-
   public:
     /**
-     * Default constructor, constructs a marker at (x,y)
-     * @param color of marker in map visualization
-     * @param text of the marker (max 30 char)
-     * @param x [m]
-     * @param y [m]
+     * Default constructor
+     * @param r red
+     * @param g green
+     * @param b blue
      */
-    CMapMarker(CRgbColor color, char* text, float x=0, float y=0);
+    CRgbColor( int r=0, int g=0, int b=0 );
     /**
-     * Default constructor, constructs a marker at (x,y)
-     * @param color of marker in map visualization
-     * @param text of the marker (max 30 char)
-     * @param point to mark
+     * Copy constructor 
      */
-    CMapMarker(CRgbColor color, char* text, Rapi::CPoint2d point);
+    CRgbColor(CRgbColor const &color);
     /** Default destructor */
-    ~CMapMarker();
+    ~CRgbColor();
     /**
-     * Gets the location of the marker
-     * @return location
+     * Assignment operator
      */
-    Rapi::CPoint2d getLocation() {return mLocation; };
-    /**
-     * Sets the location of the marker
-     * @param loc location to be set
-     */
-    void setLocation(Rapi::CPoint2d loc);
-    /**
-     * Gets the color of the marker
-     * @return color
-     */
-    CRgbColor getColor() { return mColor; };
-    /**
-     * Gets the text of the marker
-     * @return text
-     */
-    char* getText() { return mText; };
-
-  private:
-    /** Location of the marker [m][m] */
-    Rapi::CPoint2d mLocation;
-    /** Color of the marker */
-    CRgbColor mColor;
-    /** Text of the marker */
-    char mText[30];
-
+    void operator = (CRgbColor const &color);
+    /** Red value */
+    int mRed;
+    /** Green value */
+    int mGreen;
+    /** Blue value */
+    int mBlue;
 
 };
 
