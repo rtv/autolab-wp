@@ -19,7 +19,6 @@ SET( SOURCES
      wavefrontmap.cpp
      mapmarker.cpp
      rgbcolor.cpp
-     logwriter.cpp
 )
 SET( HEADERS
   wavefrontmap.h
