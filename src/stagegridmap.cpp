@@ -28,15 +28,15 @@
 //-----------------------------------------------------------------------------
 CStageGridMap::CStageGridMap ( Stg::Model* stgModel, float wavefrontCellSize )
     : CGridMap()
-{
+{ 
   Stg::Geom geom;
   int width;
   int height;
 
   // get an occupancy grid from the Stage model
   geom = stgModel->GetGeom();
-  width = geom.size.x / wavefrontCellSize;
-  height = geom.size.y / wavefrontCellSize;
+  width = (int)( geom.size.x / wavefrontCellSize );
+  height = (int)( geom.size.y / wavefrontCellSize );
 
   // make sure we have an odd numer of cells
   if ( ( width % 2 ) == 0 )
