@@ -1,0 +1,6 @@
+Wavefront Planner depends on autolab-rapi. This library can be found at
+
+git://github.com/jwawerla/autolab-rapi.git
+
+If cmake can find Stage http://playerstage.sourceforge.net/ it will build a
+CGridMap with a Stage interface.
