@@ -22,6 +22,9 @@ SET( SOURCES
 )
 SET( HEADERS
   wavefrontmap.h
+  gridmap.h
+  mapmarker.h
+  rgbcolor.h
 )
 
 IF ( STAGE_FOUND )
