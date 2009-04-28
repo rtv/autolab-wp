@@ -30,22 +30,21 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
     : CGridMap()
 {
   float wavefrontCellSize;
-  char* mapName = NULL;
-  Stg::Model* mapModel;
+  Stg::Model* map_model;
   Stg::Geom geom;
   int width;
   int height;
 
 
-  if ( ! stgModel->GetPropertyStr ( "mapmodel", &mapName,  NULL ) ) {
+  if ( ! stgModel->GetPropertyStr ( "mapmodel", &mapModel,  NULL ) ) {
     PRT_ERR1 ( "Stage model %s has no mapmodel string specified in worldfile.",
                stgModel->Token() );
     exit ( -1 );
   }
 
-  mapModel = stgModel->GetWorld()->GetModel ( mapName );
-  if ( ! mapModel ) {
-    PRT_ERR1 ( "worldfile has no model named \"%s\"", mapName );
+  map_model = stgModel->GetWorld()->GetModel ( mapModel );
+  if ( ! map_model ) {
+    PRT_ERR1 ( "worldfile has no model named \"%s\"", mapModel );
     exit ( -1 );
   }
 
@@ -55,7 +54,7 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
                 stgModel->Token(), wavefrontCellSize );
 
   // get an occupancy grid from the Stage model
-  geom = mapModel->GetGeom();
+  geom = map_model->GetGeom();
   width = ( int ) ( geom.size.x / wavefrontCellSize );
   height = ( int ) ( geom.size.y / wavefrontCellSize );
 
@@ -68,7 +67,7 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
 
   uint8_t* cells = new uint8_t[ width * height ];
 
-  mapModel->Rasterize ( cells,
+  map_model->Rasterize ( cells,
                          width, height,
                          wavefrontCellSize, wavefrontCellSize );
 
@@ -78,7 +77,7 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
 
   // place a pointer to the map in the model where others (e.g. the MapVis object)
   // can find it
-  stgModel->SetProperty ( "wavefront_map", static_cast<void*> ( this ) );
+  modPos->SetProperty ( "wavefront_map", static_cast<void*> ( this ) );
 
 }
 //-----------------------------------------------------------------------------

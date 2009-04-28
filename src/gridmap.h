@@ -49,7 +49,6 @@ class CGridMap
      * @param cellSize size of a cell [m]
      */
     CGridMap ( int numCellsX, int numCellY, float cellSize );
-
     /**
      * Constructs a map from an occupancy grid (0=empty, >0=occupied).
      * Map cell values are set to 0.0=empty, 1.0=occupied.
@@ -136,7 +135,6 @@ class CGridMap
      * @return min cell value
      */
     float getMinCellValue() { return mMinCellValue; };
-
     /** Actual map data */
     float** mMapData;
     /**

@@ -42,8 +42,9 @@ class CStageGridMap : public CGridMap
      * Constructs a map from a Stage model grid (0=empty, >0=occupied).
      * Map cell values are set to 0.0=empty, 1.0=occupied.
      * @param model Stage model to get map data from
+     * @param cellSize size of a grid cell [m]
      */
-    CStageGridMap(Stg::Model* model);
+    CStageGridMap(Stg::Model* model, float cellSize);
     /** Default destructor */
     virtual ~CStageGridMap();
 
