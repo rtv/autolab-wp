@@ -17,14 +17,10 @@ ENDIF( RAPI_FOUND )
 SET( SOURCES
      gridmap.cpp
      wavefrontmap.cpp
-     mapmarker.cpp
-     rgbcolor.cpp
 )
 SET( HEADERS
   wavefrontmap.h
   gridmap.h
-  mapmarker.h
-  rgbcolor.h
 )
 
 IF ( STAGE_FOUND )

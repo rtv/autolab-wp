@@ -54,6 +54,10 @@
 #include "stage.hh"
 #include <iostream>
 
+/**
+ * A Stage visualizer for a wavefront map
+ * @author Richard Vaughan
+ */
 class MapVis : public Stg::Visualizer
 {
   private:
@@ -76,8 +80,8 @@ class MapVis : public Stg::Visualizer
       if ( now != current_mod ) {
         current_mod = now;
         // fetch the map out of the model
-       // map = (CWaveFrontMap*) current_mod->GetProperty ( "wavefront_map" );
-        map = static_cast<CWaveFrontMap*>( current_mod->GetProperty ( "wavefront_map" ) );
+        // map = (CWaveFrontMap*) current_mod->GetProperty ( "wavefront_map" );
+        map = static_cast<CWaveFrontMap*> ( current_mod->GetProperty ( "wavefront_map" ) );
       }
 
       if ( map == NULL )
@@ -92,7 +96,7 @@ class MapVis : public Stg::Visualizer
       double bg_height = geom.size.y;
 
       double scalex = map->mObstacleMap->getCellSize();//bg_width / (double)NX;
-		double scaley = scalex;////bg_height / (double)NY;
+      double scaley = scalex;////bg_height / (double)NY;
 
       glPushMatrix();
       glTranslatef ( -bg_width / 2.0, -bg_height / 2.0, 0.01 );
@@ -109,9 +113,9 @@ class MapVis : public Stg::Visualizer
           //glRectf ( x, y, x + 1, y + 1 );
           //displaymod->PopColor();
 
-			 displaymod->PushColor ( 0,0,0,0.5);
-			 displaymod->PopColor();
-			 
+          displaymod->PushColor ( 0,0,0,0.5 );
+          displaymod->PopColor();
+
 
           float mapval = 1.0 - MIN ( map->mMapData[x][y] / normalizer, 1 );
           if ( mapval > 0.00 ) {
@@ -119,7 +123,6 @@ class MapVis : public Stg::Visualizer
             glRectf ( x, y, x + 1, y + 1 );
             displaymod->PopColor();
           }
-
 
           // dynamic data
           float obstacleval = MAX ( 0, map->mSensorMap[x][y] - map->mSensorMapTimeOffset );
@@ -129,25 +132,25 @@ class MapVis : public Stg::Visualizer
             displaymod->PopColor();
           }
         }
-		
+
 
 #if 0
-		// outline all cells in grid (debug)
-		displaymod->PushColor( 0,0,0,1 );				
-		glBegin( GL_LINES );
-		for ( int x = 0; x < NX; x++ ){
-		  glVertex2f( x, 0 );
-		  glVertex2f( x, NY );
-		}		
-		for ( int y = 0; y < NY; y++ ){
-		  glVertex2f( 0, y );
-		  glVertex2f( NX, y );
-		}
-		glEnd();
-		displaymod->PopColor();
+      // outline all cells in grid (debug)
+      displaymod->PushColor ( 0,0,0,1 );
+      glBegin ( GL_LINES );
+      for ( int x = 0; x < NX; x++ ) {
+        glVertex2f ( x, 0 );
+        glVertex2f ( x, NY );
+      }
+      for ( int y = 0; y < NY; y++ ) {
+        glVertex2f ( 0, y );
+        glVertex2f ( NX, y );
+      }
+      glEnd();
+      displaymod->PopColor();
 #endif
-		
-      glPopMatrix();	 
+
+      glPopMatrix();
     }
 };
 

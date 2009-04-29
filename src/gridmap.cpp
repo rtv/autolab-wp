@@ -85,28 +85,10 @@ CGridMap::CGridMap ( int numCellsX, int numCellsY, float cellSize )
 }
 
 //---------------------------------------------------------------------------
-CGridMap::CGridMap ( uint8_t* data, int numCellsX, int numCellsY, float cellSize )
+CGridMap::CGridMap ( uint8_t* data, int numCellsX, int numCellsY,
+                     float cellSize )
 {
-  // printf ( "CGridMap::CGridMap  %d %d \n", numCellsX, numCellsY );
-  mNumCellsX = numCellsX;
-  mNumCellsY = numCellsY;
-  mCenterCellX = ( mNumCellsX - 1 ) / 2;
-  mCenterCellY = ( mNumCellsY - 1 ) / 2;
-  mCellSize = cellSize;
-
-  mMapData = new float*[mNumCellsX];
-
-  for ( int x = 0; x < mNumCellsX; x++ ) {
-    mMapData[x] = new float[mNumCellsY];
-  }
-
-  // initialize the grid
-  for ( int x = 0; x < mNumCellsX; x++ )
-    for ( int y = 0; y < mNumCellsY; y++ )
-      mMapData[x][y] = ( data[ x + y*numCellsX ] == 0 ) ? 0.0 : 1.0;
-
-  mMinCellValue = 0.0;
-  mMaxCellValue = 1.0;
+  createMap ( data, numCellsX, numCellsY, cellSize );
 }
 //---------------------------------------------------------------------------
 CGridMap::CGridMap()
@@ -177,6 +159,30 @@ CGridMap::~CGridMap()
   for ( int x = 0; x < mNumCellsX; x++ ) {
     delete[] mMapData[x];
   }
+}
+//---------------------------------------------------------------------------
+void CGridMap::createMap ( uint8_t* data, int numCellsX, int numCellsY,
+                           float cellSize )
+{
+  mNumCellsX = numCellsX;
+  mNumCellsY = numCellsY;
+  mCenterCellX = ( mNumCellsX - 1 ) / 2;
+  mCenterCellY = ( mNumCellsY - 1 ) / 2;
+  mCellSize = cellSize;
+
+  mMapData = new float*[mNumCellsX];
+
+  for ( int x = 0; x < mNumCellsX; x++ ) {
+    mMapData[x] = new float[mNumCellsY];
+  }
+
+  // initialize the grid
+  for ( int x = 0; x < mNumCellsX; x++ )
+    for ( int y = 0; y < mNumCellsY; y++ )
+      mMapData[x][y] = ( data[ x + y*numCellsX ] == 0 ) ? 0.0 : 1.0;
+
+  mMinCellValue = 0.0;
+  mMaxCellValue = 1.0;
 }
 //---------------------------------------------------------------------------
 float CGridMap::getMapHeight()

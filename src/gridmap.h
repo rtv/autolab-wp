@@ -24,8 +24,6 @@
 #ifndef CGRIDMAP_H
 #define CGRIDMAP_H
 
-
-#include "mapmarker.h"
 #include "RapiCore"
 #include <list>
 #include <math.h>
@@ -138,10 +136,6 @@ class CGridMap
     /** Actual map data */
     float** mMapData;
     /**
-     * List of map markers
-     */
-    std::list<CMapMarker> mMapMarkerList;
-    /**
      * Marks the current position of the robot
      * @param robotPos position of robot to mark
      */
@@ -158,6 +152,15 @@ class CGridMap
      * a grid map
      */
     CGridMap();
+    /**
+     * Creates a map from an occupancy grid (0=empty, >0=occupied).
+     * Map cell values are set to 0.0=empty, 1.0=occupied.
+     * @param data occupancy grid, one uint8_t per cell
+     * @param numCellsX number of cells in X
+     * @param numCellsY number of cells in Y
+     * @param cellSize size of a cell [m]
+     */
+    void createMap ( uint8_t* data, int numCellsX, int numCellsY, float cellSize );
     /**
      * Transforms map center coordinates into local grid coordinate system
      * @param gPos global position

@@ -26,6 +26,7 @@
 
 #include "rangefinder.h"
 #include "gridmap.h"
+#include "waypoint2d.h"
 #include <list>
 #include <math.h>
 
@@ -59,7 +60,13 @@ class CWaveFrontMap : public CGridMap
      */
     void update( float timestamp );
     /**
-     * Sets the robot position
+     * Sets the minimum and maximum distance between two consecutive waypoints
+     * @param minDist [m]
+     * @param maxDist [m]
+     */
+    void setWaypointDistance ( float minDist, float maxDist );
+    /**
+     * Sets the robot position, the planner will continue to query this pointer
      * @param pos of robot
      */
     void setRobotPose(CPose2d* pos);
@@ -141,7 +148,7 @@ class CWaveFrontMap : public CGridMap
       * Gets the way point list, note this method clears destList first
       * @param destList to fill with way points
       */
-     void getWayPointList(std::list<CPose2d> &destList);
+     void getWayPointList(std::list<CWaypoint2d> &destList);
      /**
       * Saves the gradient map to a file
       * @param filename
@@ -162,10 +169,9 @@ class CWaveFrontMap : public CGridMap
      float** mSensorMap;
      /** Sensor map time offset */
      float mSensorMapTimeOffset;
-     /** List of way points */
-     std::list<CPose2d> mWayPointList;
-    /** Map that contains all obstacles */
-    CGridMap* mObstacleMap;
+     /** Map that contains all obstacles */
+     CGridMap* mObstacleMap;
+
   protected:
     /**
      * Generates the distance to closest obstacle map from a give
@@ -179,11 +185,14 @@ class CWaveFrontMap : public CGridMap
        int x;
        int y;
      } tCellCoordinate;
+
   private:
     /** Robot pose */
     CPose2d* mRobotPose;
     /** List of range finders */
     std::list<ARangeFinder*> mRangeFinderList;
+     /** List of way points */
+     std::list<CWaypoint2d> mWayPointList;
     /** Name of map */
     char mName[25];
     /** Kernel */

@@ -36,6 +36,7 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
   int width;
   int height;
 
+  assert ( stgModel );
 
   if ( ! stgModel->GetPropertyStr ( "mapmodel", &mapName,  NULL ) ) {
     PRT_ERR1 ( "Stage model %s has no mapmodel string specified in worldfile.",
@@ -69,16 +70,11 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
   uint8_t* cells = new uint8_t[ width * height ];
 
   mapModel->Rasterize ( cells,
-                         width, height,
-                         wavefrontCellSize, wavefrontCellSize );
+                        width, height,
+                        wavefrontCellSize, wavefrontCellSize );
 
-  CGridMap ( cells, width, height, wavefrontCellSize );
+  createMap ( cells, width, height, wavefrontCellSize );
   delete[] cells;
-
-
-  // place a pointer to the map in the model where others (e.g. the MapVis object)
-  // can find it
-  stgModel->SetProperty ( "wavefront_map", static_cast<void*> ( this ) );
 
 }
 //-----------------------------------------------------------------------------

@@ -28,6 +28,10 @@
 
 #include "gridmap.h"
 #include "stage.hh"
+#include "wavefrontmapvis.h"
+
+/** Instance of the map visualization tool for stage */
+static MapVis stgMapVis;
 
 /**
  * This class in an extention to CGridMap in that it provides an
