@@ -126,7 +126,7 @@ class MapVis : public Stg::Visualizer
 
           // dynamic data
           float obstacleval = MAX ( 0, map->mSensorMap[x][y] - map->mSensorMapTimeOffset );
-          if ( obstacleval > 0.01 ) {
+          if ( obstacleval > 0.00 ) {
             displaymod->PushColor ( 0, obstacleval, 0, 1.0 );
             glRectf ( x, y, x + 1, y + 1 );
             displaymod->PopColor();

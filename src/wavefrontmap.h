@@ -51,14 +51,16 @@ class CWaveFrontMap : public CGridMap
      * Default contrustor
      * @param obstacleMap map with obstacle to use for wave front
      */
-    CWaveFrontMap( CGridMap* obstacleMap, const char* name=NULL );
+    CWaveFrontMap ( CGridMap* obstacleMap, const char* name=NULL );
     /** Default destructor */
     ~CWaveFrontMap();
+
+    typedef enum {USE_SENSOR_DATA, USE_MAP_ONLY} tDataSource;
     /**
      * Update the map, basically decaying sensor information
      * @param timestamp current time [s]
      */
-    void update( float timestamp );
+    void update ( float timestamp );
     /**
      * Sets the minimum and maximum distance between two consecutive waypoints
      * @param minDist [m]
@@ -69,19 +71,26 @@ class CWaveFrontMap : public CGridMap
      * Sets the robot position, the planner will continue to query this pointer
      * @param pos of robot
      */
-    void setRobotPose(CPose2d* pos);
+    void setRobotPose ( CPose2d* pos );
     /**
      * Adds a rangefinder for dynamic obstacles
      * @param rangerfinder to be added
      */
-    void addRangeFinder(ARangeFinder* rangeFinder);
+    void addRangeFinder ( ARangeFinder* rangeFinder );
     /**
      * Calculate the wavefront for a give local location
      * @param goal location
      * @param useSensorData incoorporates the range finder data
      * @return 1 success, 0 otherwise
      */
-     int calculateWaveFront(CPoint2d goal, bool useSensorData = false);
+    int calculateWaveFront ( CPoint2d goal, tDataSource useSensorData = USE_MAP_ONLY );
+    /**
+     * Calculate the wavefront for a give local location
+     * @param goal location
+     * @param useSensorData incoorporates the range finder data
+     * @return 1 success, 0 otherwise
+     */
+    int calculateWaveFront ( CPose2d goal, tDataSource useSensorData = USE_MAP_ONLY );
     /**
      * Calculate the wavefront for a give local location
      * @param x [m]
@@ -89,88 +98,99 @@ class CWaveFrontMap : public CGridMap
      * @param useSensorData incoorporates the range finder data
      * @return 1 success, 0 otherwise
      */
-     int calculateWaveFront(float x, float y, bool useSensorData = false);
-     /**
-      * Gets the direction of the gradient
-      * @param localPos position to get gradient for
-      * @return direction [rad]
-      */
-     float getGradientDirection(CPoint2d localPos);
-     /**
-      * NOTE: this doesn't work yet
-      * Update the wavefront gradient only localy, based on the current
-      * sensor data
-      * @return 1 success, 0 otherwise
-      */
-     //int calculateLocalWaveFront ();
-     /**
-      * Gets the value of the gradient
-      * @param localPos position to get gradient for
-      * @return gradient value [rad]
-      */
-     float getGradient(CPoint2d localPos);
-     /**
-      * Calculates a plan from a given location to the goal location,
-      * sets map markers for a plan and returns the length
-      * to the goal location
-      * @param localPos position to start at
-      * @return length of plan [m], -1 in case of an error
-      */
-     float calculatePlanFrom(CPoint2d localPos);
-     /**
-      * Calculates a plan from a given location to the goal location,
-      * sets map markers for a plan and returns the length
-      * to the goal location
-      * @param localPos position to start at
-      * @return length of plan [m], -1 in case of an error
-      */
-     float calculatePlanFrom(CPose2d localPos);
-     /**
-      * Calculates a plan from a given location to the goal location,
-      * sets map markers for a plan and returns the length
-      * to the goal location
-      * @param x of start
-      * @param y of start
-      * @return length of plan [m], -1 in case of an error
-      */
-     float calculatePlanFrom(float x, float y);
-     /**
-      * Gets the distance to the closest obstacle
-      * @return distance [m]
-      */
-     float getDistanceToClosestObstacle(CPoint2d localPos);
-     /**
-      * Gets the name of the map
-      * @return map name
-      */
-     char* getName() {return mName; };
-     /**
-      * Gets the way point list, note this method clears destList first
-      * @param destList to fill with way points
-      */
-     void getWayPointList(std::list<CWaypoint2d> &destList);
-     /**
-      * Saves the gradient map to a file
-      * @param filename
-      */
-     void saveMaptoFile( char* fileName);
+    int calculateWaveFront ( float x, float y, tDataSource useSensorData = USE_MAP_ONLY );
+    /**
+     * Gets the direction of the gradient
+     * @param localPos position to get gradient for
+     * @return direction [rad]
+     */
+    float getGradientDirection ( CPoint2d localPos );
+    /**
+     * NOTE: this doesn't work yet
+     * Update the wavefront gradient only localy, based on the current
+     * sensor data
+     * @return 1 success, 0 otherwise
+     */
+    //int calculateLocalWaveFront ();
+    /**
+     * Gets the value of the gradient
+     * @param localPos position to get gradient for
+     * @return gradient value [rad]
+     */
+    float getGradient ( CPoint2d localPos );
+    /**
+     * Calculates a plan from a given location to the goal location,
+     * sets map markers for a plan and returns the length
+     * to the goal location
+     * @param localPos position to start at
+     * @return length of plan [m], -1 in case of an error
+     */
+    float calculatePlanFrom ( CPoint2d localPos );
+    /**
+     * Calculates a plan from a given location to the goal location,
+     * sets map markers for a plan and returns the length
+     * to the goal location
+     * @param localPos position to start at
+     * @return length of plan [m], -1 in case of an error
+     */
+    float calculatePlanFrom ( CPose2d localPos );
+    /**
+     * Calculates a plan from a given location to the goal location,
+     * sets map markers for a plan and returns the length
+     * to the goal location
+     * @param x of start
+     * @param y of start
+     * @return length of plan [m], -1 in case of an error
+     */
+    float calculatePlanFrom ( float x, float y );
+    /**
+     * Gets the distance to the closest obstacle
+     * @return distance [m]
+     */
+    float getDistanceToClosestObstacle ( CPoint2d localPos );
+    /**
+     * Gets the name of the map
+     * @return map name
+     */
+    char* getName() {return mName; };
+    /**
+     * Gets the way point list, note this method clears destList first
+     * @param destList to fill with way points
+     */
+    void getWaypointList ( std::list<CWaypoint2d> &destList );
+    /**
+     * Saves the gradient map to a file
+     * @param filename
+     */
+    void saveMaptoFile ( char* fileName );
+    /**
+     * Sets the value by which to grow obstacles
+     * @param growth [m]
+     */
+    void setObstacleGrowth ( float growth );
+    /**
+     * Sets a threshold for add waypoints based on the angular change of the
+     * planned path
+     * @param angle [rad]
+     */
+    void setAngleWaypointThreshold(float angle);
 #ifdef SPEED_OG
-     /** Datastructure for speed over ground data */
-     typedef struct {
-       /** Speed over ground [m/s] */
-       float sog;
-       /** Timestamp of last update [s] */
-       float timestamp;
-     } tSOGData;
-     /** Map with speed over ground data */
-     tSOGData** mSOGMap;
+    /** Datastructure for speed over ground data */
+    typedef struct {
+      /** Speed over ground [m/s] */
+      float sog;
+      /** Timestamp of last update [s] */
+      float timestamp;
+    } tSOGData;
+    /** Map with speed over ground data */
+    tSOGData** mSOGMap;
 #endif
-     /** Map with the local sensor data */
-     float** mSensorMap;
-     /** Sensor map time offset */
-     float mSensorMapTimeOffset;
-     /** Map that contains all obstacles */
-     CGridMap* mObstacleMap;
+    /** Map with the local sensor data */
+    float** mSensorMap;
+    /** Sensor map time offset */
+    float mSensorMapTimeOffset;
+    /** Map that contains all obstacles */
+    CGridMap* mObstacleMap;
 
   protected:
     /**
@@ -181,18 +201,18 @@ class CWaveFrontMap : public CGridMap
     /** Generates an obstacle map form the range finder information */
     void generateSensorMap();
 
-     typedef struct {
-       int x;
-       int y;
-     } tCellCoordinate;
+    typedef struct {
+      int x;
+      int y;
+    } tCellCoordinate;
 
   private:
     /** Robot pose */
     CPose2d* mRobotPose;
     /** List of range finders */
     std::list<ARangeFinder*> mRangeFinderList;
-     /** List of way points */
-     std::list<CWaypoint2d> mWayPointList;
+    /** List of way points */
+    std::list<CWaypoint2d> mWaypointList;
     /** Name of map */
     char mName[25];
     /** Kernel */
@@ -206,17 +226,17 @@ class CWaveFrontMap : public CGridMap
     /** Maximal distance for any cell to any obstacle [m] */
     float mMaxObstacleDistance;
     /** Maximal number of way points */
-    unsigned int mMaxNumWayPoints;
+    unsigned int mMaxNumWaypoints;
     /** Goal location */
     CPoint2d mGoalPosition;
-    /** Value by with to grow obstacles [m] */
+    /** Value by which obstacles are grown [m] */
     float mObstacleGrowth;
     /** Minimum allowable distance between two waypoints [m] */
-    float mMinWayPointDistance;
+    float mMinWaypointDistance;
     /** Maximum allowable distance between two waypoints [m] */
-    float mMaxWayPointDistance;
+    float mMaxWaypointDistance;
     /** Threshold for direction change between two waypoints [rad] */
-    float mAngleWayPointThreshold;
+    float mAngleWaypointThreshold;
     /** Forget rate for the sensor map data [1/s] */
     float mSensorMapForgetRate;
     /** Time stamp of last update call [s] */

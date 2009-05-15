@@ -80,8 +80,8 @@ CGridMap::CGridMap ( int numCellsX, int numCellsY, float cellSize )
 
   preSetMap ( 0 );
 
-  mMinCellValue = 0.0;
-  mMaxCellValue = 1.0;
+  mMinCellValue = 0.0f;
+  mMaxCellValue = 1.0f;
 }
 
 //---------------------------------------------------------------------------

@@ -15,8 +15,8 @@ ELSE( RAPI_FOUND )
 ENDIF( RAPI_FOUND )
 
 SET( SOURCES
-     gridmap.cpp
-     wavefrontmap.cpp
+  gridmap.cpp
+  wavefrontmap.cpp
 )
 SET( HEADERS
   wavefrontmap.h

@@ -153,6 +153,29 @@ class CGridMap
      */
     CGridMap();
     /**
+     * Checks if a given cell index is valid, that is, is in bounds
+     * @param x
+     * @param y
+     * @return true if valid or false otherwise
+     */
+    bool isCellIndexValid ( int x, int y ) {
+      if ( ( x >= 0 ) && ( x < mNumCellsX ) && ( y >= 0 ) && ( y < mNumCellsY ) )
+        return true;
+      return false;
+    };
+    /**
+     * Converts meters to cell index for x direction
+     * @param x [m]
+     * @return cell index
+     */
+    int meterToCellIndexX ( float x ) {return mCenterCellX + ( int ) round ( x / mCellSize );};
+    /**
+     * Converts meters to cell index for y direction
+     * @param y [m]
+     * @return cell index
+     */
+    int meterToCellIndexY ( float y ) {return mCenterCellY + ( int ) round ( y / mCellSize ); };
+    /**
      * Creates a map from an occupancy grid (0=empty, >0=occupied).
      * Map cell values are set to 0.0=empty, 1.0=occupied.
      * @param data occupancy grid, one uint8_t per cell
