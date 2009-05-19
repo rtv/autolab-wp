@@ -50,7 +50,8 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
     exit ( -1 );
   }
 
-  if ( ! stgModel->GetPropertyFloat ( "wavefrontcellsize", &wavefrontCellSize,  0.1 ) )
+  if ( ! stgModel->GetPropertyFloat ( "wavefrontcellsize", &wavefrontCellSize,
+    0.1 ) )
     PRT_WARN2 ( "robot %s has no parameter wavefrontcellsize specified in "\
                 "worldfile. Using %.2f meters",
                 stgModel->Token(), wavefrontCellSize );
@@ -69,6 +70,7 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
 
   uint8_t* cells = new uint8_t[ width * height ];
 
+  bzero(cells, width * height);
   mapModel->Rasterize ( cells,
                         width, height,
                         wavefrontCellSize, wavefrontCellSize );

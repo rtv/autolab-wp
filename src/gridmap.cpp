@@ -96,64 +96,6 @@ CGridMap::CGridMap()
   // empty constructor for derived classes only
 }
 //---------------------------------------------------------------------------
-/*
-CGridMap::CGridMap ( Stg::Model* model, float cellSize )
-{
-  Stg::Geom geom;
-  float value;
-  float cellsPerMeter = 1.0/cellSize;
-  int i, j;
-  int stageNumCellsX;
-  int stageNumCellsY;
-  uint8_t* cells;
-
-  // define cells
-  mCellSize = cellSize;
-  mMinCellValue = 0.0;
-  mMaxCellValue = 1.0;
-
-  // get data from stage
-  geom = model->GetGeom();
-  stageNumCellsX = ( int )ceil( geom.size.x * cellsPerMeter );
-  stageNumCellsY = ( int )ceil( geom.size.y * cellsPerMeter );
-  cells = new uint8_t[ stageNumCellsX * stageNumCellsY ];
-  model->Rasterize ( cells, stageNumCellsX, stageNumCellsY );
-  // make sure we have an odd number of cells in each dimension
-  mNumCellsX = ( int ) ceil ( stageNumCellsX / cellsPerMeter / mCellSize );
-  mNumCellsY = ( int ) ceil ( stageNumCellsY / cellsPerMeter / mCellSize );
-
-  if ( mNumCellsX % 2 == 0 )
-    mNumCellsX++;
-  if ( mNumCellsY % 2 == 0 )
-    mNumCellsY++;
-
-  // find center cell
-  mCenterCellX = ( mNumCellsX - 1 ) / 2;
-  mCenterCellY = ( mNumCellsY - 1 ) / 2;
-
-  // create map data structure
-  mMapData = new float*[mNumCellsX];
-  for ( int x = 0; x < mNumCellsX; x++ ) {
-    mMapData[x] = new float[mNumCellsY];
-  }
-
-  preSetMap ( mMinCellValue );
-
-  // fill map data structure
-  for ( int x = 0; x < stageNumCellsX; x++ )
-    for ( int y = 0; y < stageNumCellsY; y++ ) {
-      i = ( int ) round ( x / cellsPerMeter / mCellSize );
-      j = ( int ) round ( y / cellsPerMeter / mCellSize );
-      //value = ( cells[ x + y*stageNumCellsX ] == 0 ) ? 0.0 : 1.0;
-      value = cells[ x + y*stageNumCellsX ];
-      mMapData[i][j] = MAX ( mMapData[i][j], value );
-      if ( (x < 15)  && (y < 25) ) {
-        //printf(" x %d y %d %f\n", x, y, value);
-      }
-    }
-}
-*/
-//---------------------------------------------------------------------------
 CGridMap::~CGridMap()
 {
   for ( int x = 0; x < mNumCellsX; x++ ) {
@@ -178,24 +120,25 @@ void CGridMap::createMap ( uint8_t* data, int numCellsX, int numCellsY,
 
   // initialize the grid
   for ( int x = 0; x < mNumCellsX; x++ )
-    for ( int y = 0; y < mNumCellsY; y++ )
-      mMapData[x][y] = ( data[ x + y*numCellsX ] == 0 ) ? 0.0 : 1.0;
+    for ( int y = 0; y < mNumCellsY; y++ ) {
+      mMapData[x][y] = ( data[ x + y*numCellsX ] == 0 ) ? 0.0f : 1.0f;
+    }
 
-  mMinCellValue = 0.0;
-  mMaxCellValue = 1.0;
+  mMinCellValue = 0.0f;
+  mMaxCellValue = 1.0f;
 }
 //---------------------------------------------------------------------------
-float CGridMap::getMapHeight()
+float CGridMap::getMapHeight() const
 {
   return ( mNumCellsY -1 ) * mCellSize;
 }
 //---------------------------------------------------------------------------
-float CGridMap::getMapWidth()
+float CGridMap::getMapWidth() const
 {
   return ( mNumCellsX -1 ) * mCellSize;
 }
 //---------------------------------------------------------------------------
-float CGridMap::getCellValue ( CPose2d pose )
+float CGridMap::getCellValue ( CPose2d pose ) const
 {
   CPoint2d pos;
 
@@ -204,7 +147,7 @@ float CGridMap::getCellValue ( CPose2d pose )
   return getCellValue ( pos );
 }
 //---------------------------------------------------------------------------
-float CGridMap::getCellValue ( CPoint2d pos )
+float CGridMap::getCellValue ( CPoint2d pos ) const
 {
   int x, y;
 

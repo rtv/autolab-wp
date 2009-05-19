@@ -90,49 +90,49 @@ class CGridMap
      * Gets the width of the map
      * @return [m]
      */
-    float getMapWidth();
+    float getMapWidth() const;
     /**
      * Gets the height of the map
      * @return [m]
      */
-    float getMapHeight();
+    float getMapHeight() const;
     /**
      * Gets the cell value at a given position
      * @param pos position to get value for
      * @return cell value
      */
-    float getCellValue ( CPoint2d pos );
+    float getCellValue ( CPoint2d pos ) const;
     /**
      * Gets the cell value at a given position
      * @param pos position to get value for
      * @return cell value
      */
-    float getCellValue ( CPose2d pose );
+    float getCellValue ( CPose2d pose ) const;
     /**
      * Gets the size of a cell
      * @return cell size [m]
      */
-    float getCellSize() { return mCellSize; };
+    float getCellSize() const { return mCellSize; };
     /**
      * Gets the number of cells in x direction
      * @return number of cells
      */
-    int getNumCellsX() { return mNumCellsX; };
+    int getNumCellsX() const { return mNumCellsX; };
     /**
      * Gets the number of cells in y direction
      * @return number of cells
      */
-    int getNumCellsY() { return mNumCellsY; };
+    int getNumCellsY() const { return mNumCellsY; };
     /**
      * Gets the maximal possibile value of a cell
      * @return max cell value
      */
-    float getMaxCellValue() { return mMaxCellValue; };
+    float getMaxCellValue() const { return mMaxCellValue; };
     /**
      * Gets the minimal possibile value of a cell
      * @return min cell value
      */
-    float getMinCellValue() { return mMinCellValue; };
+    float getMinCellValue() const { return mMinCellValue; };
     /** Actual map data */
     float** mMapData;
     /**
@@ -168,13 +168,19 @@ class CGridMap
      * @param x [m]
      * @return cell index
      */
-    int meterToCellIndexX ( float x ) {return mCenterCellX + ( int ) round ( x / mCellSize );};
+    int meterToCellIndexX ( float x ) {
+      return mCenterCellX +
+             ( int ) round ( x / mCellSize );
+    };
     /**
      * Converts meters to cell index for y direction
      * @param y [m]
      * @return cell index
      */
-    int meterToCellIndexY ( float y ) {return mCenterCellY + ( int ) round ( y / mCellSize ); };
+    int meterToCellIndexY ( float y ) {
+      return mCenterCellY +
+             ( int ) round ( y / mCellSize );
+    };
     /**
      * Creates a map from an occupancy grid (0=empty, >0=occupied).
      * Map cell values are set to 0.0=empty, 1.0=occupied.

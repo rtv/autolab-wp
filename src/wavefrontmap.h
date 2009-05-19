@@ -83,14 +83,16 @@ class CWaveFrontMap : public CGridMap
      * @param useSensorData incoorporates the range finder data
      * @return 1 success, 0 otherwise
      */
-    int calculateWaveFront ( CPoint2d goal, tDataSource useSensorData = USE_MAP_ONLY );
+    int calculateWaveFront ( const CPoint2d goal,
+     tDataSource useSensorData = USE_MAP_ONLY );
     /**
      * Calculate the wavefront for a give local location
      * @param goal location
      * @param useSensorData incoorporates the range finder data
      * @return 1 success, 0 otherwise
      */
-    int calculateWaveFront ( CPose2d goal, tDataSource useSensorData = USE_MAP_ONLY );
+    int calculateWaveFront ( const CPose2d goal, 
+    tDataSource useSensorData = USE_MAP_ONLY );
     /**
      * Calculate the wavefront for a give local location
      * @param x [m]
@@ -98,13 +100,14 @@ class CWaveFrontMap : public CGridMap
      * @param useSensorData incoorporates the range finder data
      * @return 1 success, 0 otherwise
      */
-    int calculateWaveFront ( float x, float y, tDataSource useSensorData = USE_MAP_ONLY );
+    int calculateWaveFront ( const float x, const float y,
+     tDataSource useSensorData = USE_MAP_ONLY );
     /**
      * Gets the direction of the gradient
      * @param localPos position to get gradient for
      * @return direction [rad]
      */
-    float getGradientDirection ( CPoint2d localPos );
+    float getGradientDirection ( const CPoint2d localPos );
     /**
      * NOTE: this doesn't work yet
      * Update the wavefront gradient only localy, based on the current
@@ -117,7 +120,7 @@ class CWaveFrontMap : public CGridMap
      * @param localPos position to get gradient for
      * @return gradient value [rad]
      */
-    float getGradient ( CPoint2d localPos );
+    float getGradient ( const CPoint2d localPos );
     /**
      * Calculates a plan from a given location to the goal location,
      * sets map markers for a plan and returns the length
@@ -125,7 +128,7 @@ class CWaveFrontMap : public CGridMap
      * @param localPos position to start at
      * @return length of plan [m], -1 in case of an error
      */
-    float calculatePlanFrom ( CPoint2d localPos );
+    float calculatePlanFrom ( const CPoint2d localPos );
     /**
      * Calculates a plan from a given location to the goal location,
      * sets map markers for a plan and returns the length
@@ -133,7 +136,7 @@ class CWaveFrontMap : public CGridMap
      * @param localPos position to start at
      * @return length of plan [m], -1 in case of an error
      */
-    float calculatePlanFrom ( CPose2d localPos );
+    float calculatePlanFrom ( const CPose2d localPos );
     /**
      * Calculates a plan from a given location to the goal location,
      * sets map markers for a plan and returns the length
@@ -142,12 +145,12 @@ class CWaveFrontMap : public CGridMap
      * @param y of start
      * @return length of plan [m], -1 in case of an error
      */
-    float calculatePlanFrom ( float x, float y );
+    float calculatePlanFrom ( const float x, const float y );
     /**
      * Gets the distance to the closest obstacle
      * @return distance [m]
      */
-    float getDistanceToClosestObstacle ( CPoint2d localPos );
+    float getDistanceToClosestObstacle ( const CPoint2d localPos );
     /**
      * Gets the name of the map
      * @return map name
@@ -167,13 +170,13 @@ class CWaveFrontMap : public CGridMap
      * Sets the value by which to grow obstacles
      * @param growth [m]
      */
-    void setObstacleGrowth ( float growth );
+    void setObstacleGrowth ( const float growth );
     /**
      * Sets a threshold for add waypoints based on the angular change of the
      * planned path
      * @param angle [rad]
      */
-    void setAngleWaypointThreshold(float angle);
+    void setAngleWaypointThreshold(const float angle);
 #ifdef SPEED_OG
     /** Datastructure for speed over ground data */
     typedef struct {
