@@ -70,6 +70,7 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
 
   uint8_t* cells = new uint8_t[ width * height ];
 
+  // pre-set cells with 0, Stage only sets obstacles but not free areas
   bzero(cells, width * height);
   mapModel->Rasterize ( cells,
                         width, height,
