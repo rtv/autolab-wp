@@ -581,7 +581,7 @@ int CWaveFrontMap::calculateWaveFront ( const float x, const float y,
 int CWaveFrontMap::calculateWaveFront ( const CPoint2d goal,
                                         tDataSource useSensorData )
 {
-int count = 0;
+  int count = 0;
   tCellCoordinate cell;
   tCellCoordinate newCell;
   std::list<tCellCoordinate> cellList;
@@ -591,7 +591,7 @@ int count = 0;
 
   // clear old wavefront map
   preSetMap ( WAVEFRONT_MAP_UNDEFINED );
-  mMaxCellValue = 0;
+  mMaxCellValue = 0.0;
 
   mGoalPosition = goal;
   halfKernelLenght = ( KERNEL_SIZE - 1 ) / 2;
