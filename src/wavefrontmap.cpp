@@ -836,7 +836,7 @@ float CWaveFrontMap::calculatePlanFrom ( const CPoint2d localPos )
   float minValue;
   float wayPointDist;
   float maxDistValue;
-  float lastHeading = TWOPI;
+  float lastHeading = TWO_PI;
   float heading = 0;
   tCellCoordinate minCell;
   CPoint2d minNeighbour;
