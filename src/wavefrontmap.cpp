@@ -233,7 +233,7 @@ void CWaveFrontMap::generateDistanceMap()
         mDistanceMap[x][y] = 0.0f;
       } else {
         if ( x < mNumCellsX - 1 ) {
-          mDistanceMap[x][y] = MIN ( mDistanceMap[x][y],
+          mDistanceMap[x][y] = min ( mDistanceMap[x][y],
            mDistanceMap[x+1][y] + mCellSize );
         } else
           mDistanceMap[x][y] = 0.0f;
@@ -248,7 +248,7 @@ void CWaveFrontMap::generateDistanceMap()
         mDistanceMap[x][y] = 0.0f;
       } else {
         if ( y > 0 ) {
-          mDistanceMap[x][y] = MIN ( mDistanceMap[x][y],
+          mDistanceMap[x][y] = min ( mDistanceMap[x][y],
            mDistanceMap[x][y-1] + mCellSize );
         } else
           mDistanceMap[x][y] = 0.0f;
@@ -263,7 +263,7 @@ void CWaveFrontMap::generateDistanceMap()
         mDistanceMap[x][y] = 0.0f;
       } else {
         if ( y < mNumCellsY - 1 ) {
-          mDistanceMap[x][y] = MIN ( mDistanceMap[x][y],
+          mDistanceMap[x][y] = min ( mDistanceMap[x][y],
            mDistanceMap[x][y+1] + mCellSize );
         } else
           mDistanceMap[x][y] = 0.0f;
@@ -278,7 +278,7 @@ void CWaveFrontMap::generateDistanceMap()
         mDistanceMap[x][y] = 0.0f;
       } else {
         if ( ( x > 0 ) && ( y > 0 ) ) {
-          mDistanceMap[x][y] = MIN ( mDistanceMap[x][y],
+          mDistanceMap[x][y] = min ( mDistanceMap[x][y],
            mDistanceMap[x-1][y-1] + d );
         } else
           mDistanceMap[x][y] = 0.0f;
@@ -293,7 +293,7 @@ void CWaveFrontMap::generateDistanceMap()
         mDistanceMap[x][y] = 0.0f;
       } else {
         if ( ( x < mNumCellsX - 1 ) && ( y > 0 ) ) {
-          mDistanceMap[x][y] = MIN ( mDistanceMap[x][y],
+          mDistanceMap[x][y] = min ( mDistanceMap[x][y],
            mDistanceMap[x+1][y-1] + d );
         } else
           mDistanceMap[x][y] = 0.0f;
@@ -308,7 +308,7 @@ void CWaveFrontMap::generateDistanceMap()
         mDistanceMap[x][y] = 0.0f;
       } else {
         if ( ( x < mNumCellsX - 1 ) && ( y < mNumCellsY - 1 ) ) {
-          mDistanceMap[x][y] = MIN ( mDistanceMap[x][y], 
+          mDistanceMap[x][y] = min ( mDistanceMap[x][y], 
           mDistanceMap[x+1][y+1] + d );
         } else
           mDistanceMap[x][y] = 0.0f;
@@ -323,7 +323,7 @@ void CWaveFrontMap::generateDistanceMap()
         mDistanceMap[x][y] = 0.0f;
       } else {
         if ( ( x > 0 ) && ( y < mNumCellsY - 1 ) ) {
-          mDistanceMap[x][y] = MIN ( mDistanceMap[x][y],
+          mDistanceMap[x][y] = min ( mDistanceMap[x][y],
            mDistanceMap[x-1][y+1] + d );
         } else
           mDistanceMap[x][y] = 0.0f;
@@ -335,7 +335,7 @@ void CWaveFrontMap::generateDistanceMap()
   mMaxObstacleDistance = 0.0f;
   for ( int x = 0; x < mNumCellsX; x++ ) {
     for ( int y = 0; y < mNumCellsY; y++ ) {
-      mMaxObstacleDistance = MAX ( mMaxObstacleDistance, mDistanceMap[x][y] );
+      mMaxObstacleDistance = max ( mMaxObstacleDistance, mDistanceMap[x][y] );
     }
   }
 }
@@ -456,7 +456,7 @@ void CWaveFrontMap::generateSensorMap()
   if ( mSensorMapTimeOffset > 1e6 ) {
     for ( int x = 0; x < mNumCellsX; x++ ) {
       for ( int y = 0; y < mNumCellsY; y++ ) {
-        mSensorMap[x][y] = MAX ( mSensorMap[x][y] - mSensorMapTimeOffset, 0.0 );
+        mSensorMap[x][y] = max ( mSensorMap[x][y] - mSensorMapTimeOffset, 0.0 );
       }
     }
     mSensorMapTimeOffset = 0.0;
@@ -487,7 +487,7 @@ void CWaveFrontMap::generateSensorMap()
       for ( unsigned int i = 0; i < rf->getNumSamples(); i++ ) {
 
         r = rf->mRangeData[i].range;
-        yaw = NORMALIZE_TO_PI ( NORMALIZE_TO_PI ( mRobotPose->mYaw ) +
+        yaw = normalizeAngle ( mRobotPose->mYaw  +
                                 rf->mRelativeBeamPose[i].mYaw );
 
         stepCount = ( int ) floor ( r/stepSize ) + 2;
@@ -502,7 +502,7 @@ void CWaveFrontMap::generateSensorMap()
 
 
           if ( isCellIndexValid ( xC, yC ) ) {
-            mSensorMap[xC][yC] = MAX ( mSensorMap[xC][yC], mSensorMapTimeOffset );
+            mSensorMap[xC][yC] = max ( mSensorMap[xC][yC], mSensorMapTimeOffset );
             mSensorMap[xC][yC] = mSensorMap[xC][yC] - 0.025;
           }
         } // for step count
@@ -515,10 +515,10 @@ void CWaveFrontMap::generateSensorMap()
           for ( int x = xC - cellGrowth; x <= xC + cellGrowth; x++ ) {
             for ( int y = yC - cellGrowth; y <= yC + cellGrowth; y++ ) {
               if ( isCellIndexValid ( x, y ) ) {
-                mSensorMap[x][y] = MAX ( mSensorMap[x][y], mSensorMapTimeOffset );
+                mSensorMap[x][y] = max ( mSensorMap[x][y], mSensorMapTimeOffset );
                 mSensorMap[x][y] = mSensorMap[x][y] + 0.1;
                 // make sure everything stays in the limits
-                mSensorMap[x][y] = MIN ( mSensorMap[x][y], mSensorMapTimeOffset +
+                mSensorMap[x][y] = min ( mSensorMap[x][y], mSensorMapTimeOffset +
                                          1.0 );
               }
             }
@@ -654,7 +654,7 @@ int CWaveFrontMap::calculateWaveFront ( const CPoint2d goal,
 #endif
         if ( mMapData[x][y] > m ) {
           mMapData[x][y] = m;
-          mMaxCellValue = MAX ( mMaxCellValue, m );
+          mMaxCellValue = max ( mMaxCellValue, m );
         }
       } // for
     } // for

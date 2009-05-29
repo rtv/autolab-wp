@@ -186,10 +186,10 @@ void CGridMap::preSetMap ( float value, CPose2d center, float halfBoxLenght )
   minY = ( int ) floor ( ( center.mY - halfBoxLenght ) / mCellSize );
   maxY = ( int ) ceil ( ( center.mY + halfBoxLenght ) / mCellSize );
 
-  minX = (int)LIMIT ( minX, 0, mNumCellsX - 1 );
-  maxX = (int)LIMIT ( maxX, 0, mNumCellsX - 1 );
-  minX = (int)LIMIT ( minY, 0, mNumCellsY - 1 );
-  maxY = (int)LIMIT ( maxY, 0, mNumCellsY - 1 );
+  minX = (int)limit ( minX, 0, mNumCellsX - 1 );
+  maxX = (int)limit ( maxX, 0, mNumCellsX - 1 );
+  minX = (int)limit ( minY, 0, mNumCellsY - 1 );
+  maxY = (int)limit ( maxY, 0, mNumCellsY - 1 );
 
   for ( int x = minX; x <= maxX; x++ ) {
     for ( int y = minY; y <= maxY; y++ ) {
@@ -214,7 +214,7 @@ float CGridMap::findMaxCellValue()
 
   for ( int x = 0; x < mNumCellsX; x++ ) {
     for ( int y = 0; y < mNumCellsY; y++ ) {
-      m = MAX ( m, mMapData[x][y] );
+      m = max ( m, mMapData[x][y] );
     }
   }
   return m;
