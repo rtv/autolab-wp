@@ -38,7 +38,6 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
 
   assert ( stgModel );
 
-printf("CStageGridMap::CStageGridMap \n");
   mStageModel = stgModel;
 
   if ( ! stgModel->GetPropertyStr ( "mapmodel", &mapName,  NULL ) ) {
