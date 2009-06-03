@@ -54,23 +54,26 @@
 #include "stage.hh"
 #include <iostream>
 
+#ifndef WAVEFRONTMAPVIS_H
+#define WAVEFRONTMAPVIS_H
+
 /**
  * A Stage visualizer for a wavefront map
  * @author Richard Vaughan
  */
-class MapVis : public Stg::Visualizer
+class CWaveFrontMapVis : public Stg::Visualizer
 {
   private:
     Stg::Model* current_mod;
     CWaveFrontMap* map;
 
   public:
-    MapVis() :
+    CWaveFrontMapVis() :
         Stg::Visualizer ( "Wavefront planner", "show_wavefront" ),
         current_mod ( NULL ),
         map ( NULL ) {}
 
-    virtual ~MapVis() {}
+    virtual ~CWaveFrontMapVis() {}
 
     virtual void Visualize ( Stg::Model* displaymod, Stg::Camera* cam ) {
       // has the currently selected robot changed?
@@ -154,4 +157,4 @@ class MapVis : public Stg::Visualizer
     }
 };
 
-
+#endif

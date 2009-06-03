@@ -23,39 +23,33 @@
  *
  *
  ***************************************************************************/
-#ifndef STAGEGRIDMAP_H
-#define STAGEGRIDMAP_H
+#ifndef STAGEWAVEFRONTMAP_H
+#define STAGEWAVEFRONTMAP_H
 
-#include "gridmap.h"
-#include "stage.hh"
+#include "wavefrontmap.h"
+#include "stagegridmap.h"
+#include "wavefrontmapvis.h"
 
+/** Instance of the map visualization tool for stage */
+static CWaveFrontMapVis stageWaveFrontMapVis;
 
 /**
- * This class in an extention to CGridMap in that it provides an
- * interface to Stage. It is able to load a map directly from Stage using
- * the rasterizer.
+ * A Stage version of the wavefront map. This class is directly derived from
+ * CWaveFrontMap and just extends it by registering a visualizer with Stage
  * @author Jens Wawerla
- */
-class CStageGridMap : public CGridMap
+*/
+class CStageWaveFrontMap : public CWaveFrontMap
 {
-  public:
+public:
     /**
-     * Constructs a map from a Stage model grid (0=empty, >0=occupied).
-     * Map cell values are set to 0.0=empty, 1.0=occupied.
-     * @param model Stage model to get map data from
+     * Default constructor
+     * @param obstacleMap map with obstacle to use for wave front
+     * @param name of map
      */
-    CStageGridMap(Stg::Model* model);
-    /** Default destructor */
-    virtual ~CStageGridMap();
-    /**
-     * Gets the underlying stage model
-     * @return stage model
-     */
-    Stg::Model* getStageModel() const { return mStageModel; };
+    CStageWaveFrontMap(CStageGridMap* obstacleMap, std::string name="Wavefront" );
+     /** Default destructor */
+    ~CStageWaveFrontMap();
 
-  protected:
-    /** Stage model */
-    Stg::Model* mStageModel;
 };
 
 #endif

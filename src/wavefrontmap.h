@@ -29,6 +29,7 @@
 #include "waypoint2d.h"
 #include <list>
 #include <math.h>
+#include <string>
 
 //#define SPEED_OG 1
 
@@ -48,10 +49,11 @@ class CWaveFrontMap : public CGridMap
 
   public:
     /**
-     * Default contrustor
+     * Default constructor
      * @param obstacleMap map with obstacle to use for wave front
+     * @param name of map
      */
-    CWaveFrontMap ( CGridMap* obstacleMap, const char* name=NULL );
+    CWaveFrontMap ( CGridMap* obstacleMap, std::string name="Wavefront" );
     /** Default destructor */
     ~CWaveFrontMap();
 
@@ -84,15 +86,15 @@ class CWaveFrontMap : public CGridMap
      * @return 1 success, 0 otherwise
      */
     int calculateWaveFront ( const CPoint2d goal,
-     tDataSource useSensorData = USE_MAP_ONLY );
+                             tDataSource useSensorData = USE_MAP_ONLY );
     /**
      * Calculate the wavefront for a give local location
      * @param goal location
      * @param useSensorData incoorporates the range finder data
      * @return 1 success, 0 otherwise
      */
-    int calculateWaveFront ( const CPose2d goal, 
-    tDataSource useSensorData = USE_MAP_ONLY );
+    int calculateWaveFront ( const CPose2d goal,
+                             tDataSource useSensorData = USE_MAP_ONLY );
     /**
      * Calculate the wavefront for a give local location
      * @param x [m]
@@ -101,7 +103,7 @@ class CWaveFrontMap : public CGridMap
      * @return 1 success, 0 otherwise
      */
     int calculateWaveFront ( const float x, const float y,
-     tDataSource useSensorData = USE_MAP_ONLY );
+                             tDataSource useSensorData = USE_MAP_ONLY );
     /**
      * Gets the direction of the gradient
      * @param localPos position to get gradient for
@@ -155,7 +157,7 @@ class CWaveFrontMap : public CGridMap
      * Gets the name of the map
      * @return map name
      */
-    char* getName() {return mName; };
+    std::string getName() const {return mName; };
     /**
      * Gets the way point list, note this method clears destList first
      * @param destList to fill with way points
@@ -176,7 +178,7 @@ class CWaveFrontMap : public CGridMap
      * planned path
      * @param angle [rad]
      */
-    void setAngleWaypointThreshold(const float angle);
+    void setAngleWaypointThreshold ( const float angle );
 #ifdef SPEED_OG
     /** Datastructure for speed over ground data */
     typedef struct {
@@ -217,7 +219,7 @@ class CWaveFrontMap : public CGridMap
     /** List of way points */
     std::list<CWaypoint2d> mWaypointList;
     /** Name of map */
-    char mName[25];
+    std::string mName;
     /** Kernel */
     float** mKernel;
     /** Threshold for cell values, everything >= is considered an obstacle */

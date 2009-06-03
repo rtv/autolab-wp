@@ -107,8 +107,34 @@ const float MAX_SPEED = 1.0;
 /** Kernel size */
 const int KERNEL_SIZE = 3;
 
+
+
+/*
+//-----------------------------------------------------------------------------
+#ifdef STAGE
+CWaveFrontMap::CWaveFrontMap ( CStageGridMap* obstacleMap, std::string name)
+    : CGridMap ( obstacleMap->getNumCellsX(),
+                 obstacleMap->getNumCellsY(),
+                 obstacleMap->getCellSize() )
+{
+
+  Stg::Model* stgModel;
+  Stg::Model* bg;
+
+  constructorBase(obstacleMap, name);
+
+  stgModel = ((CStageGridMap*)obstacleMap)->getStageModel();
+  assert(stgModel);
+  stgModel->SetProperty( "wavefront_map", static_cast<void*>( this ) );
+
+  bg = stgModel->GetWorld()->GetModel( "background" );
+  assert( bg );
+  bg->AddVisualizer( &stgMapVis, false );
+}
+#endif
+*/
 //---------------------------------------------------------------------------
-CWaveFrontMap::CWaveFrontMap ( CGridMap* obstacleMap, const char* name )
+CWaveFrontMap::CWaveFrontMap ( CGridMap* obstacleMap, std::string name )
     : CGridMap ( obstacleMap->getNumCellsX(),
                  obstacleMap->getNumCellsY(),
                  obstacleMap->getCellSize() )
@@ -130,10 +156,7 @@ CWaveFrontMap::CWaveFrontMap ( CGridMap* obstacleMap, const char* name )
   mRobotPose = NULL;
   mTimeStampOfLastUpdate = 0.0;
 
-  if ( name == NULL )
-    strncpy ( mName, "Wavefront", 25 );
-  else
-    strncpy ( mName, name, 25 );
+  mName = name;
 
   mDistanceMap = new float*[mNumCellsX];
   mSensorMap = new float*[mNumCellsX];
@@ -180,7 +203,7 @@ CWaveFrontMap::CWaveFrontMap ( CGridMap* obstacleMap, const char* name )
     }
   }
 }
-//---------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 CWaveFrontMap::~CWaveFrontMap()
 {
   for ( int x = 0; x < mNumCellsX; x++ ) {

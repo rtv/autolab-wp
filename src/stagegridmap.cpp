@@ -38,6 +38,9 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
 
   assert ( stgModel );
 
+printf("CStageGridMap::CStageGridMap \n");
+  mStageModel = stgModel;
+
   if ( ! stgModel->GetPropertyStr ( "mapmodel", &mapName,  NULL ) ) {
     PRT_ERR1 ( "Stage model %s has no mapmodel string specified in worldfile.",
                stgModel->Token() );

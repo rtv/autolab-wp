@@ -30,12 +30,14 @@ IF ( STAGE_FOUND )
   MESSAGE( STATUS "    OPENGL  = ${OPENGL}" )
 
   SET( SOURCES
-     ${SOURCES}
      stagegridmap.cpp
+     stagewavefrontmap.cpp
+     ${SOURCES}
   )
   SET( HEADERS
     ${HEADERS}
     stagegridmap.h
+    stagewavefrontmap.h
     wavefrontmapvis.h
   )
 ELSE ( STAGE_FOUND )

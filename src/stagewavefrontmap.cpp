@@ -23,39 +23,30 @@
  *
  *
  ***************************************************************************/
-#ifndef STAGEGRIDMAP_H
-#define STAGEGRIDMAP_H
+#include "stagewavefrontmap.h"
+#include <stage.hh>
+#include "wavefrontmapvis.h"
 
-#include "gridmap.h"
-#include "stage.hh"
-
-
-/**
- * This class in an extention to CGridMap in that it provides an
- * interface to Stage. It is able to load a map directly from Stage using
- * the rasterizer.
- * @author Jens Wawerla
- */
-class CStageGridMap : public CGridMap
+//-----------------------------------------------------------------------------
+CStageWaveFrontMap::CStageWaveFrontMap ( CStageGridMap* obstacleMap,
+    std::string name )
+    : CWaveFrontMap ( obstacleMap, name )
 {
-  public:
-    /**
-     * Constructs a map from a Stage model grid (0=empty, >0=occupied).
-     * Map cell values are set to 0.0=empty, 1.0=occupied.
-     * @param model Stage model to get map data from
-     */
-    CStageGridMap(Stg::Model* model);
-    /** Default destructor */
-    virtual ~CStageGridMap();
-    /**
-     * Gets the underlying stage model
-     * @return stage model
-     */
-    Stg::Model* getStageModel() const { return mStageModel; };
+  Stg::Model* stgModel;
+  Stg::Model* bg;
 
-  protected:
-    /** Stage model */
-    Stg::Model* mStageModel;
-};
+  stgModel = obstacleMap->getStageModel();
+  assert(stgModel);
+  stgModel->SetProperty( "wavefront_map", static_cast<void*>( this ) );
 
-#endif
+  bg = stgModel->GetWorld()->GetModel( "background" );
+  assert( bg );
+  bg->AddVisualizer( &stageWaveFrontMapVis, false );
+}
+//-----------------------------------------------------------------------------
+CStageWaveFrontMap::~CStageWaveFrontMap()
+{
+  // nothing to do
+}
+//-----------------------------------------------------------------------------
+
