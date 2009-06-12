@@ -4,3 +4,15 @@ git://github.com/jwawerla/autolab-rapi.git
 
 If cmake can find Stage http://playerstage.sourceforge.net/ it will build a
 CGridMap with a Stage interface.
+
+If you downloaded the project in zip or tar formats, unpack the archives. If you want 
+to build "out of source" so that built binaries are placed outside of the source tree,
+create the directory for the binaries and change into it. Otherwise, change into the project
+directory. Run
+
+        $ cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR $PROJECT_PATH
+        $ make
+        $ make install
+                        
+Where `$INSTALL_DIR` is the desired installation prefix and `$PROJECT_PATH` is the root directory
+of the autolab-rapi project.
