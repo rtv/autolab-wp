@@ -84,7 +84,7 @@ class CWaveFrontMapVis : public Stg::Visualizer
         current_mod = now;
         // fetch the map out of the model
         // map = (CWaveFrontMap*) current_mod->GetProperty ( "wavefront_map" );
-        map = static_cast<CWaveFrontMap*> ( current_mod->GetProperty ( "wavefront_map" ) );
+        map = const_cast<CWaveFrontMap*>(static_cast<const CWaveFrontMap*> ( current_mod->GetProperty ( "wavefront_map" )));
       }
 
       if ( map == NULL )
@@ -120,7 +120,7 @@ class CWaveFrontMapVis : public Stg::Visualizer
           displaymod->PopColor();
 
 
-          float mapval = 1.0 - MIN ( map->mMapData[x][y] / normalizer, 1 );
+          float mapval = 1.0 - std::min ( map->mMapData[x][y] / normalizer, (float)1 );
           if ( mapval > 0.00 ) {
             displaymod->PushColor ( mapval, mapval, mapval, 0.8 );
             glRectf ( x, y, x + 1, y + 1 );
@@ -128,7 +128,7 @@ class CWaveFrontMapVis : public Stg::Visualizer
           }
 
           // dynamic data
-          float obstacleval = MAX ( 0, map->mSensorMap[x][y] - map->mSensorMapTimeOffset );
+          float obstacleval = std::max( (float)0, map->mSensorMap[x][y] - map->mSensorMapTimeOffset );
           if ( obstacleval > 0.00 ) {
             displaymod->PushColor ( 0, obstacleval, 0, 1.0 );
             glRectf ( x, y, x + 1, y + 1 );

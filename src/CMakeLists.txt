@@ -26,8 +26,9 @@ SET( HEADERS
 IF ( STAGE_FOUND )
   MESSAGE( STATUS "Stage found, will compile Stage dependencies")
 
-  FIND_LIBRARY( OPENGL NAMES OpenGL )
-  MESSAGE( STATUS "    OPENGL  = ${OPENGL}" )
+  # do some work to cope with frameworks on OS X
+  STRING(REGEX REPLACE ";" " " STAGE_LDFLAGS_MORE "${STAGE_LDFLAGS_OTHER}")
+  MESSAGE(STAGE_LDFLAGS_MORE " ${STAGE_LDFLAGS_MORE}" )
 
   SET( SOURCES
      stagegridmap.cpp
@@ -55,7 +56,6 @@ LINK_DIRECTORIES( ${RAPI_LIBRARY_DIRS} ${STAGE_LIBRARY_DIRS} )
 
 LINK_LIBRARIES( ${TARGET}
   ${RAPI_LIBRARIES}
-#  ${OPENGL}
   ${STAGE_LIBRARIES}
 )
 
@@ -64,7 +64,8 @@ ADD_LIBRARY( ${TARGET} SHARED ${SOURCES} )
 
 # give the shared library a version number
 SET_TARGET_PROPERTIES( ${TARGET} PROPERTIES
-  VERSION ${VERSION}
+                       VERSION ${VERSION}
+  		                 LINK_FLAGS "${STAGE_LDFLAGS_MORE}"
 )
 
 INSTALL(TARGETS ${TARGET}
