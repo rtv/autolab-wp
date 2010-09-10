@@ -1,0 +1,12 @@
+.cproject
+.project
+CMakeCache.txt
+CMakeFiles/
+Makefile
+autolab-wp.pc
+cmake_install.cmake
+src/CMakeFiles/
+src/Makefile
+src/cmake_install.cmake
+src/libautolab-wp.so
+src/libautolab-wp.so.0.1.0
