@@ -23,6 +23,7 @@
  *
  *
  ***************************************************************************/
+#include <string>
 #include "stagegridmap.h"
 
 //-----------------------------------------------------------------------------
@@ -40,11 +41,13 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
 
   mStageModel = stgModel;
 
-  if ( ! stgModel->GetPropertyStr ( "mapmodel", &mapName,  NULL ) ) {
-    PRT_ERR1 ( "Stage model %s has no mapmodel string specified in worldfile.",
-               stgModel->Token() );
+  std::string mapmodel_key = std::string( "mapmodel" );
+  void* mapmodel_prop = stgModel->GetProperty( mapmodel_key );
+  if ( ! mapmodel_prop ) {
+    PRT_ERR1 ( "Stage model %s has no mapmodel string specified in worldfile.", stgModel->Token() );
     exit ( -1 );
   }
+  mapName = *(char**) mapmodel_prop;
 
   mapModel = stgModel->GetWorld()->GetModel ( mapName );
   if ( ! mapModel ) {
@@ -52,11 +55,16 @@ CStageGridMap::CStageGridMap ( Stg::Model* stgModel )
     exit ( -1 );
   }
 
-  if ( ! stgModel->GetPropertyFloat ( "wavefrontcellsize", &wavefrontCellSize,
-    0.1 ) )
+  std::string wavefrontcellsize_key = std::string( "wavefrontcellsize" );
+  void* wavefrontcellsize_prop = stgModel->GetProperty( wavefrontcellsize_key );
+  if ( ! wavefrontcellsize_prop ) {
+	wavefrontCellSize = 0.1;
     PRT_WARN2 ( "robot %s has no parameter wavefrontcellsize specified in "\
                 "worldfile. Using %.2f meters",
                 stgModel->Token(), wavefrontCellSize );
+  }
+  else
+	  wavefrontCellSize = *(float*) wavefrontcellsize_prop;
 
   // get an occupancy grid from the Stage model
   geom = mapModel->GetGeom();

@@ -37,7 +37,8 @@ CStageWaveFrontMap::CStageWaveFrontMap ( CStageGridMap* obstacleMap,
 
   stgModel = obstacleMap->getStageModel();
   assert(stgModel);
-  stgModel->SetProperty( "wavefront_map", static_cast<void*>( this ) );
+  std::string wavefront_map_key = std::string( "wavefront_map" );
+  stgModel->SetProperty( wavefront_map_key, static_cast<void*>( this ) );
 
   bg = stgModel->GetWorld()->GetModel( "background" );
   assert( bg );

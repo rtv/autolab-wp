@@ -84,7 +84,8 @@ class CWaveFrontMapVis : public Stg::Visualizer
         current_mod = now;
         // fetch the map out of the model
         // map = (CWaveFrontMap*) current_mod->GetProperty ( "wavefront_map" );
-        map = const_cast<CWaveFrontMap*>(static_cast<const CWaveFrontMap*> ( current_mod->GetProperty ( "wavefront_map" )));
+        std::string wavefront_map_key = std::string( "wavefront_map" );
+        map = const_cast<CWaveFrontMap*>(static_cast<const CWaveFrontMap*> ( current_mod->GetProperty ( wavefront_map_key )));
       }
 
       if ( map == NULL )
